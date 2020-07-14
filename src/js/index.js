@@ -1,4 +1,4 @@
-var name = 'Richard Parker';
+let name = 'Richard Parker';
 
 /**
  *  Realiza a soma de dois números
@@ -8,4 +8,10 @@ var name = 'Richard Parker';
  */
 function soma(x, y) {
     return x + y;
+}
+
+class Animal {
+    constructor(nome) {
+        this.nome = nome;
+    }
 }

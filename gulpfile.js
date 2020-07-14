@@ -5,6 +5,9 @@ const uglifyjs = require('gulp-uglify');
 const uglifycss = require('gulp-uglifycss');
 const image = require('gulp-image');
 const sass = require('gulp-sass');
+const babel = require('gulp-babel');
+var cssimport = require('gulp-cssimport');
+
 
 sass.compiler = require('node-sass');
 
@@ -16,13 +19,17 @@ function _clean(cb) {
 function js(cb) {
     return gulp
     .src('./src/**/*.js')
-    .pipe(uglifyjs())
+    .pipe(babel({
+        presets: ['@babel/env']
+    }))
+    // .pipe(uglifyjs())
     .pipe(rename({extname: '.min.js'}))
     .pipe(gulp.dest('./dist'));
 }
 function css(cb) {
     return gulp
     .src('./src/**/*.css')
+    .pipe(cssimport())
     .pipe(uglifycss())
     .pipe(rename({extname: '.min.css'}))
     .pipe(gulp.dest('./dist'));
@@ -37,7 +44,7 @@ function _sass(cb) {
     return gulp
     .src('./src/sass/*.scss')
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-    .pipe(gulp.dest('./dist/css'))
+    .pipe(gulp.dest('./dist/css'));
 }
 function _sass_watch() {
     gulp.watch('./src/sass/*.scss', _sass);
@@ -50,8 +57,4 @@ exports.css = css;
 exports.images = images;
 exports.sass = _sass;
 exports['sass:watch'] = _sass_watch;
-exports.default = gulp.series(
-    clean, 
-    gulp.parallel(js, css, images)
-);
-exports.build = gulp.parallel(css, js, images);
+exports.default = gulp.parallel(css, js, images);

@@ -1,0 +1,7 @@
+@import 'app.css';
+@import 'https://www.ociclista.com.br/assets/css/geral.css';
+
+.title {
+    font-size: 2em;
+    color: red;
+}
